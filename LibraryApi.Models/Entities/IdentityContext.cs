@@ -36,8 +36,11 @@ namespace LibraryApi.Models.Entities
 
             //builder.Entity<User>().HasQueryFilter(u => !u.IsDeleted);
             builder.Entity<Author>().HasQueryFilter(a => !a.IsDeleted);
+
             builder.Entity<Book>().HasQueryFilter(b => !b.IsDeleted);
+            
             builder.Entity<Category>().HasQueryFilter(c => !c.IsDeleted);
+            
             builder.Entity<Activity>().HasQueryFilter(a => !a.Book.IsDeleted);
         }
 

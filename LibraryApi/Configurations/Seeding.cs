@@ -3,11 +3,8 @@ using LibraryApi.Models.Enumerators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using LibraryApi.Models.Entities;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibraryApi
@@ -32,7 +29,10 @@ namespace LibraryApi
                 context.Database.Migrate();
             }
 
-            await SeedRoles(roleManager);
+            if (context.Roles.ToList().Count() == 0)
+            {
+                await SeedRoles(roleManager);
+            }
             
             await SeedUsers(userManager);
 
@@ -139,11 +139,11 @@ namespace LibraryApi
 
         private static async Task CreateRole(RoleManager<Role> roleManager, string name)
         {
-            if (!await roleManager.RoleExistsAsync(name))
-            {
+            //if (!await roleManager.RoleExistsAsync(name))
+            //{
                 var role = new Role { Name = name };
                 await roleManager.CreateAsync(role);
-            }
+            //}
         }
 
         public static async Task SeedRoles(RoleManager<Role> roleManager)

@@ -10,13 +10,13 @@ namespace LibraryApi.Models.Entities
 {
     public class Role : IdentityRole, ITracking
     {
-        public Role()
-        {
-            CreatedAt = DateTime.Now;
-            UpdatedAt = DateTime.Now;
-        }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        //public Role()
+        //{
+        //    CreatedAt = DateTime.Now;
+        //    UpdatedAt = DateTime.Now;
+        //}
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime UpdatedAt { get; set; } = DateTime.Now;
         public string CreatedBy { get; set; }
         public string UpdatedBy { get; set; }
     }
