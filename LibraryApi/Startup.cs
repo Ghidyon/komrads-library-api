@@ -4,6 +4,7 @@ using LibraryApi.Models.Enumerators;
 using LibraryApi.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using NLog;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace LibraryApi
 {
@@ -52,7 +54,8 @@ namespace LibraryApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)
+        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger,
+            IdentityContext context, RoleManager<Role> roleManager, UserManager<User> userManager)
         {
             if (env.IsDevelopment())
             {
@@ -74,8 +77,7 @@ namespace LibraryApi
                 endpoints.MapControllers();
             });
 
-            Seeding.SeedUser(app);
-            Seeding.SeedCategory(app);
+            await Seeding.InitializeData(context, userManager, roleManager);
         }
     }
 }

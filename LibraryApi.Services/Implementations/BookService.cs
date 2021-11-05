@@ -21,7 +21,10 @@ namespace LibraryApi.Services.Implementations
         private readonly IMapper _mapper;
         private readonly IOptions<DaySettings> _options;
 
-        public BookService(IUnitOfWork unitOfWork, IServiceFactory serviceFactory, IMapper mapper, IOptions<DaySettings> options)
+        public BookService(IUnitOfWork unitOfWork,
+            IServiceFactory serviceFactory,
+            IMapper mapper, 
+            IOptions<DaySettings> options)
         {
             _unitOfWork = unitOfWork;
             _serviceFactory = serviceFactory;
