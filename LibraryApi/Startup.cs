@@ -54,8 +54,7 @@ namespace LibraryApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger,
-            IdentityContext context, RoleManager<Role> roleManager, UserManager<User> userManager)
+        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)
         {
             if (env.IsDevelopment())
             {
@@ -77,7 +76,7 @@ namespace LibraryApi
                 endpoints.MapControllers();
             });
 
-            await Seeding.InitializeData(context, userManager, roleManager);
+            await Seeding.InitializeData(app, logger);
         }
     }
 }

@@ -6,6 +6,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryApi.Models.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using LibraryApi.Services.Interfaces;
 
 namespace LibraryApi
 {
@@ -20,27 +23,33 @@ namespace LibraryApi
         private const string User4 = "q.njideka";
         private const string User4Password = "Njideka@12345678";
 
-        public static async Task InitializeData(IdentityContext context, 
-            UserManager<User> userManager, 
-            RoleManager<Role> roleManager)
+        public static async Task InitializeData(IApplicationBuilder app, ILoggerManager logger)
         {
+
+            IdentityContext context = app.ApplicationServices.CreateScope()
+                .ServiceProvider.GetRequiredService<IdentityContext>();
+
+            UserManager<User> userManager = app.ApplicationServices.CreateScope()
+                .ServiceProvider.GetRequiredService<UserManager<User>>();
+
+            RoleManager<Role> roleManager = app.ApplicationServices.CreateScope()
+                .ServiceProvider.GetRequiredService<RoleManager<Role>>();
+
+
             if (context.Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory")
             {
                 context.Database.Migrate();
             }
 
-            if (context.Roles.ToList().Count() == 0)
-            {
-                await SeedRoles(roleManager);
-            }
+            await SeedRoles(roleManager);
             
             await SeedUsers(userManager);
 
-            await SeedCategories(context);
+            await SeedCategories(context, logger);
 
-            await SeedAuthors(context, userManager);
+            await SeedAuthors(context, userManager, logger);
 
-            await SeedBooks(context);
+            await SeedBooks(context, logger);
         }
 
         public static async Task SeedUsers(UserManager<User> userManager)
@@ -130,20 +139,27 @@ namespace LibraryApi
                 await userManager.AddToRoleAsync(user4, AppRole.User.ToString());
         }
 
-        public static async Task SeedCategories(IdentityContext context)
+        public static async Task SeedCategories(IdentityContext context, ILoggerManager logger)
         {
-            if (!context.Categories.Any()) return;
+            if (context.Categories.Any())
+            {
+                logger.LogInfo("Categories is already seeded!");
+                return;
+            }
 
             await context.Categories.AddRangeAsync(Categories());
+
+            await context.SaveChangesAsync();
+            logger.LogInfo("Categories successfully seeded!");
         }
 
         private static async Task CreateRole(RoleManager<Role> roleManager, string name)
         {
-            //if (!await roleManager.RoleExistsAsync(name))
-            //{
+            if (!await roleManager.RoleExistsAsync(name))
+            {
                 var role = new Role { Name = name };
                 await roleManager.CreateAsync(role);
-            //}
+            }
         }
 
         public static async Task SeedRoles(RoleManager<Role> roleManager)
@@ -187,11 +203,11 @@ namespace LibraryApi
         }
 
         public static async Task SeedAuthors(IdentityContext context, 
-            UserManager<User> userManager)
+            UserManager<User> userManager, ILoggerManager logger)
         {
             var user2 = await userManager.FindByNameAsync(User2);
 
-            if (user2 is null) return;
+            if (user2 != null) return;
 
             context.Authors.Add(new Author
             {
@@ -205,7 +221,7 @@ namespace LibraryApi
             
             var user3 = await userManager.FindByNameAsync(User3);
 
-            if (user3 is null) return;
+            if (user3 != null) return;
 
             context.Authors.Add(new Author
             {
@@ -214,12 +230,22 @@ namespace LibraryApi
                 UserId = user3.Id
             });
             
-            await userManager.AddToRoleAsync(user3, AppRole.Author.ToString());            
+            await userManager.AddToRoleAsync(user3, AppRole.Author.ToString());
+
+            await context.SaveChangesAsync();
+
+            logger.LogInfo("Books successfully seeded!");
         }
 
-        public static async Task SeedBooks(IdentityContext context)
+        public static async Task SeedBooks(IdentityContext context, ILoggerManager logger)
         {
             var authors = await Authors(context);
+
+            if (authors is null) 
+            {
+                logger.LogError("author has not been seeded, therefore book cannot be seeded!");
+                return;
+            }
 
             var books = new List<Book>
             {
@@ -261,6 +287,10 @@ namespace LibraryApi
             };
             
             context.Books.AddRange(books);
+
+            await context.SaveChangesAsync();
+
+            logger.LogInfo("Books successfully seeded!");
         }
 
         private static async Task<List<Author>> Authors(IdentityContext context)
