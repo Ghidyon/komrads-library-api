@@ -66,16 +66,18 @@ namespace LibraryApi.Test.TestUtilities
                 using (var scope = sp.CreateScope())
                 {
                     var scopedServices = scope.ServiceProvider;
+
                     var db = scopedServices.GetRequiredService<IdentityContext>();
+                    
                     var logger = scopedServices
                         .GetRequiredService<ILogger<CustomApplicationFactory<TStartup>>>();
 
                     db.Database.EnsureCreated();
-                    
+
                     // seed database
                     try
                     {
-                        db.Database.EnsureCreated();
+                        db.Database.Migrate();
                     }
                     catch (Exception ex)
                     {
