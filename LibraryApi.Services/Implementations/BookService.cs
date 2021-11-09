@@ -76,9 +76,14 @@ namespace LibraryApi.Services.Implementations
             return _mapper.Map<IEnumerable<ViewBookDto>>(books);
         }
 
-        public void DeleteBook(Book book)
+        public async void DeleteBook(Guid id)
         {
+            var book = await GetBookByIdForUpdateAsync(id, trackChanges: false);
+
+            if (book is null) return;
+
             book.IsDeleted = true;
+
             _bookRepo.Update(book);
             _unitOfWork.SaveChanges();
         }

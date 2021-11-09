@@ -239,6 +239,12 @@ namespace LibraryApi
 
         public static async Task SeedBooks(IdentityContext context, ILoggerManager logger)
         {
+            if (context.Books.Any())
+            {
+                logger.LogInfo("Books is already seeded!");
+                return;
+            }
+
             var authors = await Authors(context);
 
             if (authors is null) 

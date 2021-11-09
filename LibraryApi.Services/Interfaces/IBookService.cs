@@ -17,7 +17,7 @@ namespace LibraryApi.Services.Interfaces
         Task<IEnumerable<ViewBookDto>> GetBooksAsync();
         Task<IEnumerable<ViewBookDto>> GetBooksByCategoryAsync(string category);
         void UpdateBook(Guid id, BookForUpdateDto bookForUpdateDto);
-        void DeleteBook(Book book);
+        void DeleteBook(Guid id);
         Task<ViewActivityDto> RequestBook(Guid userId, Guid bookId);
     }
 }

@@ -12,7 +12,7 @@ namespace LibraryApi.Models.Entities
         {
             CreatedAt = DateTime.Now;
             UpdatedAt = DateTime.Now;
-            CreatedBy = AppRole.Author.ToString();
+            CreatedBy = AppRole.Admin.ToString();
         }
 
         public Guid Id { get; set; }
