@@ -52,13 +52,9 @@ namespace LibraryApi.Controllers
 
         [HttpDelete("{id}")]
         [Authorize(Policy = "RequireAdminOrAuthorRole")]
-        public async Task<IActionResult> DeleteBook(Guid id)
+        public IActionResult DeleteBook(Guid id)
         {
-            var book = await _bookService.GetBookByIdForUpdateAsync(id, trackChanges: false);
-
-            if (book is null) return BadRequest("Book is null or invalid");
-
-            _bookService.DeleteBook(book);
+            _bookService.DeleteBook(id);
 
             return NoContent();
         }
