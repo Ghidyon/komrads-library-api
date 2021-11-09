@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using LibraryApi;
 using Microsoft.AspNetCore.Hosting;
 using System.Net.Http;
 using Microsoft.Extensions.Hosting;
@@ -15,6 +11,8 @@ using LibraryApi.Models.Entities;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Builder;
+using LibraryApi.Services.Interfaces;
 
 namespace LibraryApi.Test.TestUtilities
 {
@@ -37,21 +35,21 @@ namespace LibraryApi.Test.TestUtilities
             {
                 // find the db registered in our startup class
                 ServiceDescriptor registeredApplicationDb = services.SingleOrDefault(d =>
-                d.ServiceType == typeof(DbContextOptions<IdentityContext>));
+                    d.ServiceType == typeof(DbContextOptions<IdentityContext>));
 
                 // remove it
                 if (registeredApplicationDb != null) services.Remove(registeredApplicationDb);
 
                 // find the authorization registered in our startup class
                 ServiceDescriptor registeredApplicationAuth = services.SingleOrDefault(d =>
-                d.ServiceType == typeof(AuthenticationOptions));
+                    d.ServiceType == typeof(AuthenticationOptions));
 
                 // remove it
                 if (registeredApplicationAuth != null) services.Remove(registeredApplicationAuth);
 
                 var serviceProvider = new ServiceCollection()
-                .AddEntityFrameworkInMemoryDatabase()
-                .BuildServiceProvider();
+                    .AddEntityFrameworkInMemoryDatabase()
+                    .BuildServiceProvider();
 
                 // add in-memory db
                 services.AddDbContext<IdentityContext>(options =>
@@ -72,12 +70,10 @@ namespace LibraryApi.Test.TestUtilities
                     var logger = scopedServices
                         .GetRequiredService<ILogger<CustomApplicationFactory<TStartup>>>();
 
-                    db.Database.EnsureCreated();
-
-                    // seed database
+                    
                     try
                     {
-                        db.Database.Migrate();
+                        db.Database.EnsureCreated();
                     }
                     catch (Exception ex)
                     {
