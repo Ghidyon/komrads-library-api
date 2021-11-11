@@ -70,14 +70,13 @@ namespace LibraryApi.Test.TestUtilities
                     var logger = scopedServices
                         .GetRequiredService<ILogger<CustomApplicationFactory<TStartup>>>();
 
-                    
                     try
                     {
                         db.Database.EnsureCreated();
                     }
                     catch (Exception ex)
                     {
-                        logger.LogError(ex, "an error occurred while seeding the database. Error {Message}:",
+                        logger.LogError(ex, "an error occurred while creating database. Error {Message}:",
                             ex.Message);
                     }
                 }

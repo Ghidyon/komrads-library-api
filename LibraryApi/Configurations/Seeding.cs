@@ -241,7 +241,7 @@ namespace LibraryApi
         {
             if (context.Books.Any())
             {
-                logger.LogInfo("Books is already seeded!");
+                logger.LogInfo("Books are already seeded!");
                 return;
             }
 
@@ -255,7 +255,7 @@ namespace LibraryApi
 
             var books = new List<Book>
             {
-                 new Book
+                new Book
                 {
                     Title = "Success Comes At A Price",
                     ISBN = "56422299875",
