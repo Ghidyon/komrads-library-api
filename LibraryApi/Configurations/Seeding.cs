@@ -234,7 +234,7 @@ namespace LibraryApi
 
             await context.SaveChangesAsync();
 
-            logger.LogInfo("Books successfully seeded!");
+            logger.LogInfo("Authors successfully seeded!");
         }
 
         public static async Task SeedBooks(IdentityContext context, ILoggerManager logger)
