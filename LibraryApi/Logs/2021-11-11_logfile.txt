@@ -1,0 +1,2 @@
+2021-11-11 16:00:02.0807 INFO Categories is already seeded!
+2021-11-11 16:00:02.5982 INFO Books is already seeded!
