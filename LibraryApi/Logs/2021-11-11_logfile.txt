@@ -1,2 +1,12 @@
 2021-11-11 16:00:02.0807 INFO Categories is already seeded!
 2021-11-11 16:00:02.5982 INFO Books is already seeded!
+2021-11-11 16:14:40.4021 INFO Categories is already seeded!
+2021-11-11 16:14:41.2919 INFO Books is already seeded!
+2021-11-11 18:27:25.1074 INFO Categories is already seeded!
+2021-11-11 18:27:25.3840 INFO Books are already seeded!
+2021-11-11 19:06:25.5426 INFO Categories is already seeded!
+2021-11-11 19:06:25.7706 INFO Books are already seeded!
+2021-11-11 19:24:14.3427 INFO Categories is already seeded!
+2021-11-11 19:24:14.5468 INFO Books are already seeded!
+2021-11-11 19:29:43.0890 INFO Categories is already seeded!
+2021-11-11 19:29:44.3190 INFO Books are already seeded!

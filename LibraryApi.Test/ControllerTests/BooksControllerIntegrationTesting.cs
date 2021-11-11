@@ -30,14 +30,11 @@ namespace LibraryApi.Test.ControllerTests
             // Act
             var response = await _httpClient.GetAsync(url);
 
-            //response.EnsureSuccessStatusCode();
-
-            string content = await response.Content.ReadAsStringAsync();
-
-            var responseResult = JsonConvert.DeserializeObject<IEnumerable<ViewBookDto>>(content);
+            response.EnsureSuccessStatusCode();
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
+            //Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
     }
 }
