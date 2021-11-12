@@ -34,7 +34,22 @@ namespace LibraryApi.Test.ControllerTests
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            //Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task GetBook_ReturnsBook()
+        {
+            //Arrange
+            string url = Endpoints.Books;
+            Guid id = Guid.Parse("E8D812A5-05A3-40B8-970F-BB1D052A61CF");
+
+            //Act
+            var response = await _httpClient.GetAsync(url + id);
+
+            response.EnsureSuccessStatusCode();
+
+            //Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
     }
 }

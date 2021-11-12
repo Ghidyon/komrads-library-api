@@ -8,7 +8,6 @@ namespace LibraryApi.Test.TestUtilities
 {
     public static class Endpoints
     {
-        //public const string GetAllBooksByTitle = "/api/books/booksByTitle";
-        public const string Books = "/api/books";
+        public const string Books = "/api/books/";
     }
 }

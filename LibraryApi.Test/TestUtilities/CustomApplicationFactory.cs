@@ -73,6 +73,7 @@ namespace LibraryApi.Test.TestUtilities
                     try
                     {
                         db.Database.EnsureCreated();
+                        Seeding.InitializeData(db);
                     }
                     catch (Exception ex)
                     {
