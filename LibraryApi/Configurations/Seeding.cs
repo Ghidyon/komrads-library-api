@@ -207,7 +207,7 @@ namespace LibraryApi
         {
             var user2 = await userManager.FindByNameAsync(User2);
 
-            if (user2 != null) return;
+            if (user2 is null) return;
 
             context.Authors.Add(new Author
             {
@@ -221,7 +221,7 @@ namespace LibraryApi
             
             var user3 = await userManager.FindByNameAsync(User3);
 
-            if (user3 != null) return;
+            if (user3 is null) return;
 
             context.Authors.Add(new Author
             {
@@ -244,10 +244,10 @@ namespace LibraryApi
                 logger.LogInfo("Books are already seeded!");
                 return;
             }
-
+             
             var authors = await Authors(context);
 
-            if (authors is null) 
+            if (!authors.Any()) 
             {
                 logger.LogError("author has not been seeded, therefore book cannot be seeded!");
                 return;
