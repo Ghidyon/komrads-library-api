@@ -234,7 +234,7 @@ namespace LibraryApi
 
             await context.SaveChangesAsync();
 
-            logger.LogInfo("Books successfully seeded!");
+            logger.LogInfo("Authors successfully seeded!");
         }
 
         public static async Task SeedBooks(IdentityContext context, ILoggerManager logger)
@@ -244,10 +244,10 @@ namespace LibraryApi
                 logger.LogInfo("Books are already seeded!");
                 return;
             }
-
+             
             var authors = await Authors(context);
 
-            if (authors is null) 
+            if (!authors.Any()) 
             {
                 logger.LogError("author has not been seeded, therefore book cannot be seeded!");
                 return;
